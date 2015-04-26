@@ -159,8 +159,8 @@ function UIPageView:onTouch_(event)
 	if "began" == event.name then
 		self:stopAllTransition()
 		self.bDrag_ = false
-		self.beginX_ = event.prevX
-		self.beginY_ = event.prevY
+		self.beginX_ = event.x
+		self.beginY_ = event.y
 	elseif "moved" == event.name then
 		--[[
 		Android 平台只要持续按钮屏幕，即使不移动也会触发moved事件，导致的结果就是clicked事件不会被触发
