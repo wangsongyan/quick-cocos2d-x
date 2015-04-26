@@ -159,8 +159,19 @@ function UIPageView:onTouch_(event)
 	if "began" == event.name then
 		self:stopAllTransition()
 		self.bDrag_ = false
+		self.beginX_ = event.prevX
+		self.beginY_ = event.prevY
 	elseif "moved" == event.name then
-		self.bDrag_ = true
+		--[[
+		Android 平台只要持续按钮屏幕，即使不移动也会触发moved事件，导致的结果就是clicked事件不会被触发
+		通过滑动的距离进行判断解决此问题
+		2015-04-27 fix
+		]]
+		if math.abs(event.x - self.beginX_) > 5 or math.abs(event.y - self.beginY_) > 5 then
+			self.bDrag_ = true
+		end
+
+		--self.bDrag_ = true
 		self.speed = event.x - event.prevX
 		self:scroll(self.speed)
 	elseif "ended" == event.name then
